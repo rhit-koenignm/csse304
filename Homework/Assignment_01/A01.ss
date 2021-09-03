@@ -3,30 +3,18 @@
 ; Buffalo
 
 ; #1
-(define (interval-contains? i n)
-  (and (>= n (car i)) 
-    (<= n (cadr i))))
+(define (interval-contains? interval number)
+  (and (>= number (car interval)) 
+    (<= number (cadr interval))))
 
 
 ; #2
 (define (interval-intersects? i1 i2)
-  (cond ((> (car i1) (car i2))(<= (car i1) (cadr i2))
-        )(else #f)))
+  (cond ((>= (car i1) (car i2)) (<= (car i1) (cadr i2)))
+        ((< (car i1) (car i2)) (>= (cadr i1) (car i2)))
+        (else (#f))))
 
-; (define fact
-;   (lambda (n)
-;     (if (zero? n)
-;         1
-;         (* n (fact (- n 1))))))
-
-; (define (test-interval-contains?)
-;   (let ([correct '(#t #t #f #f #t)]
-;         [answers 
-;          (list (interval-contains? '(5 8) 6) 
-;                (interval-contains? '(5 8) 5)       
-;                (interval-contains? '(5 8) 4)
-;                (interval-contains? '(5 5) 14)
-;                (interval-contains? '(5 5) 5))])
-;     (display-results correct answers equal?)))
-
-
+; #3
+(define (interval-union i1 i2)
+  (cond ((not (interval-intersects? i1 i2)) (list i1 i2))
+        (else (list (min (car i1) (car i2)) (max (cadr i1) (cadr i2))))))
