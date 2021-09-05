@@ -40,3 +40,21 @@
     (if (<= n m)
       '()
       (cons m (range (+ m 1) n)))))
+
+; #4
+; recursively 
+(define (set? li)
+    (if (null? li) 
+      #t
+      (if (contains? (car li) (cdr li))
+        #f
+        (set? (cdr li)))))
+    
+
+; Helper method for detecting if it is a set
+(define (contains? el li)
+    (if (null? li)
+      #f
+      (if (equal? el (car li))
+        #t
+        (contains? el (cdr li)))))
