@@ -65,8 +65,8 @@
 (define (union set1 set2)
   (cond [(null? set2) set1]
         [(null? set1) set2]
-        [(not (contains? (car set2) set1)) (append set1 (list (car set2)) (union set1 (cdr set2)))]
-        [else (append set1 (union set1 (cdr set2)))]))
+        [(not (contains? (car set2) set1)) (union (append set1 (list (car set2))) (cdr set2))]
+        [else (union set1 (cdr set2))]))
 
 ; #6
 ; Function that calculates the cross product using column vectors such as
@@ -96,11 +96,16 @@
 ; #8
 ; Function that determines if three points are collinear
 (define (collinear? p1 p2 p3)
-  (let ([s1 (/ (- (cadr p2) (cadr p1)) (- (car p2) (car p1)))]
-        [s2 (/ (- (cadr p3) (cadr p1)) (- (car p3) (car p1)))]
-        [s3 (/ (- (cadr p3) (cadr p2)) (- (car p3) (car p2)))])
-      (cond [(equal? s1 s2) (equal? s1 s3)]
+  (let ([ab (cross-product p1 p2)]
+        [bc (cross-product p2 p3)]
+        [ac (cross-product p1 p3)])
+      (cond [(and (parallel? ab bc) (parallel? bc ac)) (parallel? ab ac)]
             [else #f])))
+
+; (define (collinear? p1 p2 p3)
+;   (let ([ab (make-vec-from-points p1 p2)]
+;         [ac (make-vec-from-points p1 p3)])
+;       (is-zero-vec? (cross-product ab ac))))
 
 ; Helper functions from A01
 (define (first li)
@@ -128,3 +133,6 @@
         (expt (- (second p2) (second p1)) 2)
         (expt (- (third p2) (third p1)) 2))))
 
+(define (is-zero-vec? v1)
+  (cond [(and (equal? 0 (first v1)) (equal? 0 (second v1))) (equal? 0 (third v1))]
+        [else #f]))
