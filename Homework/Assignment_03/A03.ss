@@ -8,8 +8,8 @@
 ; #5
 ; Recursive function that appends all unique elements from set 2 into set 1
 (define (intersection s1 s2)
-  (cond [(null? s2) s1]
-        [(null? s1) s2]
+  (cond [(null? s2) '()]
+        [(null? s1) '()]
         [(contains? (car s2) s1) (intersection (append s1 (list (car s2))) (cdr s2))]
         [else (intersection s1 (cdr s2))]))
 

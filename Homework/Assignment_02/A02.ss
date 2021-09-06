@@ -83,7 +83,7 @@
 ; a common scalar multiple
 (define (parallel? v1 v2)
   (let ([cross (cross-product v1 v2)])
-    (cond [(and (equal? 0 (first cross)) (equal? 0 (second cross))) (equal? 0 (third cross))]
+    (cond [(is-zero-vec? cross) #t]
           [else #f])))
 
 ; (define (parallel? v1 v2)
@@ -96,11 +96,18 @@
 ; #8
 ; Function that determines if three points are collinear
 (define (collinear? p1 p2 p3)
-  (let ([ab (cross-product p1 p2)]
-        [bc (cross-product p2 p3)]
-        [ac (cross-product p1 p3)])
-      (cond [(and (parallel? ab bc) (parallel? bc ac)) (parallel? ab ac)]
-            [else #f])))
+  (let ([ab (make-vec-from-points p1 p2)]
+        [bc (make-vec-from-points p2 p3)]
+        [ac (make-vec-from-points p1 p3)])
+      (and (parallel? ab ac) (parallel? ab bc))))
+
+; (define (collinear? p1 p2 p3)
+;   (let ([ab (cross-product p1 p2)]
+;         [bc (cross-product p2 p3)]
+;         [ac (cross-product p1 p3)])
+;       (cond [(and (parallel? ab bc) (parallel? bc ac)) (parallel? ab ac)]
+;             [else #f])))
+
 
 ; (define (collinear? p1 p2 p3)
 ;   (let ([ab (make-vec-from-points p1 p2)]
@@ -134,5 +141,5 @@
         (expt (- (third p2) (third p1)) 2))))
 
 (define (is-zero-vec? v1)
-  (cond [(and (equal? 0 (first v1)) (equal? 0 (second v1))) (equal? 0 (third v1))]
+  (cond [(and (zero? (first v1)) (zero? (second v1))) (zero? (third v1))]
         [else #f]))
