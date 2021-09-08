@@ -23,7 +23,7 @@
   (lambda (n k)
     (/ (fact n) (* (fact k) (fact (- n k))))))
 
-; #2 
+; #2
 ; recursive sum of squares procedure
 ; parameter lon: must be a single-level list of numbers
 (define sum-of-squares 
