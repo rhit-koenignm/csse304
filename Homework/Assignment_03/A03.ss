@@ -55,14 +55,54 @@
         (get-x-vals (cdr rel) added)
         (get-x-vals (cdr rel) vals)))))
   
-; (define (get-x-vals rel vals)
-;   (if (null? rel)
-;     '()
-;     (append vals (list (get-x-vals (cdr rel) vals)))
-;     (if (not (contains? (car (car rel)) vals))
-;       (append vals (list (car (car rel))))))))      
-; Previous assignment's code
+; #5
+; 
+(define (reflexive? rel)
+  (if (null? rel)
+    #t
+    (reflexive-help rel rel)))
 
+(define (reflexive-help li rel)
+  (if (null? li)
+    #t
+    (if (subset? (list (list (car (car li)) (car (car li)))) rel)
+      (if (subset? (list (list (cadr (car li)) (cadr (car li)))) rel)
+        (reflexive-help (cdr li) rel)
+        #f)
+        #f)))
+
+; #6 
+
+(define (multi-set? li)
+  (if (null? li)
+    #t
+    (if (relation? li)
+      (if (and (list? (car li)) (not (integer? (car (car li)))) (equal? (length li) (length (get-x-vals li '()))) (integer? (cadr (car li))) (positive? (cadr (car li))))
+        (multi-set? (cdr li))
+      #f)
+      #f)))
+
+
+; #7
+; function finding the size of the multi-set using apply and map
+(define (ms-size ms)
+  (apply + (map cadr ms)))
+
+; #8
+; recursive function that returns the last element in the list
+(define (last li)
+  (cond [(null? li) '()]
+         [(equal? (length li) 1) (car li)]
+         [else (last (cdr li))]))
+
+; #9
+; recursive function that returns all but the last element in the list
+(define (all-but-last li)
+  (cond [(null? li) '()]
+        [(equal? (length li) 1) (all-but-last (cdr li))]
+        [else (append (list (car li)) (all-but-last (cdr li)))]))
+
+; Previous assignment's code
 
 
 ; Helper method that checks if the element given is present in the list
