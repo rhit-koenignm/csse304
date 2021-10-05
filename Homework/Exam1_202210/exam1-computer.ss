@@ -91,6 +91,14 @@
 ;; Note that you can assume depth will always be >= 2 (hopefully on
 ;; consideration you'll realize that attempting to remove depth
 ;; 1 isn't possible)
+(define (remove-depth-correct depth slist)
+  (cond [(null? slist) '()]
+        [(symbol? (car slist)) (cons (car slist) (remove-depth depth (cdr slist)))]
+        [else (if (= depth 2)
+                  (append (car slist) (remove-depth depth (cdr slist)))
+                  (cons (remove-depth (sub1 depth) (car slist)) (remove-depth depth (cdr slist)))])))
+
+
 (define (remove-depth depth slist)
   (cond [(null? slist) '()]
         [(symbol? (car slist)) (cons (car slist) (remove-depth depth (cdr slist)))]
